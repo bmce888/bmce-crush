@@ -95,7 +95,40 @@
 
   <div class="credit">Developed by Abikrishna</div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
   <script>
+    // 🔹 Replace with your Firebase config
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAZoaqFE4TvihIS9EI092uVIdWnypGYjis",
+  authDomain: "bmce-crush.firebaseapp.com",
+  projectId: "bmce-crush",
+  storageBucket: "bmce-crush.firebasestorage.app",
+  messagingSenderId: "92514777658",
+  appId: "1:92514777658:web:46bdd3f21f5ac9cc991303",
+  measurementId: "G-7WRPRQFT6T"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Add crush
     function addCrush() {
       const nameInput = document.getElementById("crushInput");
       const noteInput = document.getElementById("noteInput");
@@ -108,16 +141,41 @@
         return;
       }
 
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>${name}</strong><br><em>${note || "No note added"}</em>`;
-
-      document.getElementById("crushList").appendChild(li);
-
-      // clear inputs
-      nameInput.value = "";
-      noteInput.value = "";
+      // Save to Firestore
+      db.collection("crushes").add({
+        name: name,
+        note: note,
+        timestamp: new Date()
+      })
+      .then(() => {
+        nameInput.value = "";
+        noteInput.value = "";
+        loadCrushes(); // reload list
+      })
+      .catch(error => {
+        console.error("Error adding crush: ", error);
+      });
     }
-  </script>
 
+    // Load crushes
+    function loadCrushes() {
+      const list = document.getElementById("crushList");
+      list.innerHTML = "";
+
+      db.collection("crushes").orderBy("timestamp", "desc").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${data.name}</strong><br><em>${data.note || "No note added"}</em>`;
+            list.appendChild(li);
+          });
+        });
+    }
+
+    // Load crushes on page start
+    window.onload = loadCrushes;
+  </script>
 </body>
 </html>
+
