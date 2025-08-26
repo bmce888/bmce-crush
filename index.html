@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymous Crush Sharing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://www.chobirdokan.com/wp-content/uploads/1210/cute-love-couple-at-sunset-image.jpg') no-repeat center center fixed;
+      background-size: cover;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: rgba(108, 99, 255, 0.85);
+      color: white;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      margin: 30px auto;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    input[type="text"], textarea {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #6c63ff;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #5348d8;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #ececff;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: left;
+    }
+    .credit {
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      font-size: 14px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <header>💌 Anonymous Crush Sharing 💌</header>
+
+  <div class="container">
+    <h3>Type the name of your crush (stay anonymous)</h3>
+    <input type="text" id="crushInput" placeholder="Enter crush's name">
+
+    <h3>Write a note (optional)</h3>
+    <textarea id="noteInput" placeholder="Write a short note..."></textarea>
+    <br>
+    <button onclick="addCrush()">Submit</button>
+
+    <h3>💖 Crush List 💖</h3>
+    <ul id="crushList"></ul>
+  </div>
+
+  <div class="credit">Developed by Abikrishna</div>
+
+  <script>
+    function addCrush() {
+      const nameInput = document.getElementById("crushInput");
+      const noteInput = document.getElementById("noteInput");
+
+      const name = nameInput.value.trim();
+      const note = noteInput.value.trim();
+
+      if (name === "") {
+        alert("Please enter a name!");
+        return;
+      }
+
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${name}</strong><br><em>${note || "No note added"}</em>`;
+
+      document.getElementById("crushList").appendChild(li);
+
+      // clear inputs
+      nameInput.value = "";
+      noteInput.value = "";
+    }
+  </script>
+
+</body>
+</html>
